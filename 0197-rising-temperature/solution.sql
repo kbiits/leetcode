@@ -1,5 +1,5 @@
--- Write your PostgreSQL query statement below
-SELECT w1.id
-FROM weather w1, weather w2
-WHERE w1.recordDate - w2.recordDate = 1 AND w1.temperature > w2.temperature;
-
+SELECT t1.id
+FROM Weather t1
+INNER JOIN Weather t2
+ON TO_DAYS(t1.recordDate) = TO_DAYS(t2.recordDate) + 1
+WHERE t1.temperature > t2.temperature
