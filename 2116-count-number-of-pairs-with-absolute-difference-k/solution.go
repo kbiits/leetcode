@@ -1,40 +1,56 @@
-// O(n^2)
-// func countKDifference(nums []int, k int) int {
-//     counter := 0
-//     for i := 0; i < len(nums); i++ {
-//         for j := i + 1; j < len(nums); j++ {
-//             diff := nums[i] - nums[j]
-//             if diff < 0 {
-//                 diff = -diff
-//             }
-
-//             if diff == k {
-//                 counter++
-//             }
-//         }
-//     }
-
-//     return counter
-// }
-
-// using counting sort algorithm (hash map like)
-//  to optimize the runtime complexity
 func countKDifference(nums []int, k int) int {
+    // theMap := map[int]int{}
+    // maximum k is 99
+    // maximum nums[i] is 100
+    // so the maximum pair value is 100 + 99 = 199, that's why
+    // the array size is 200 (max index 199) 
+    theMap := make([]int, 200)
     counter := 0
-    hashMap := make([]int, 101)
 
-    for _, v := range nums {
-        hashMap[v]++
-    }
+    for _, pair1 := range nums {
+        // find where |pair1 - pair2| = k
+        // for the absolute difference, each pair will have
+        // 2 potential values that leads to k
+        // 1. pair1 - k = pair2.1
+        // 2. pair1 - (-k) = pair2.2
 
-    // k = 2 => complement (5 - 2),
-    // [0, 1, 1, 1, 1, 1]
-    //  0  1  2  3  4  5
+        pair2A := pair1 - k
+        pair2B := pair1 + k
 
-    for i := k; i < 101; i++ {
-       counter += hashMap[i] * hashMap[i - k]
+        if pair2A > 0 && pair2A <= 100 {
+            if v := theMap[pair2A];  v > 0 {
+                counter += v
+            }
+        }
+        
+        if pair2B > 0 && pair2B <= 100 {
+            if v := theMap[pair2B]; v > 0 {
+                counter += v
+            }
+        }
+
+        theMap[pair1]++
     }
 
     return counter
 }
 
+// [9,3,1,1,4,5,4,9,5,10]
+
+// [9,(3),1,1,(*4),5,4,9,5,10]
+
+// [9,3,1,1,(4),(*5),4,9,5,10]
+
+// [9,(3),1,1,4,5,(*4),9,5,10]
+// [9,3,1,1,4,(5),(*4),9,5,10]
+
+// [9,3,1,1,(4),5,4,9,(*5),10]
+// [9,3,1,1,4,5,(4),9,(*5),10]
+
+// [(9),3,1,1,4,5,4,9,5,(*10)]
+// [9,3,1,1,4,5,4,(9),5,(*10)]
+
+// 9 => 1
+// 3 => 1
+// 1 => 2
+// 4 => 2
