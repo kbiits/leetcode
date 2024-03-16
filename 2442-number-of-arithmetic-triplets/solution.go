@@ -1,27 +1,29 @@
 func arithmeticTriplets(nums []int, diff int) int {
+    theMap := map[int]int{}
     counter := 0
-    hashMap := make([]int, 201)
-
-    // consider this array
-    // [1, 2, 3] with diff = 1
-    // j should be (k - diff) => (3 - 1) = 2
-    // i should be (k - 2 * diff) => (3 - 2) = 1
-
     for _, potentialK := range nums {
-        var jFound, iFound bool
+        jFound := false
+        iFound := false
 
-        if potentialK - diff >= 0 {
-            jFound = hashMap[potentialK - diff] > 0
+        potentialJ := potentialK - diff
+        if potentialJ > 0 { // means k > j
+            // check in our table (hashmap)
+            if theMap[potentialJ] > 0 {
+                jFound = true
+            }
         }
-        if potentialK - 2 * diff >= 0 {
-            iFound = hashMap[potentialK - 2 * diff] > 0
+
+        if potentialI := potentialJ - diff; jFound {
+            if theMap[potentialI] > 0 { // means j > i
+                iFound = true
+            }
         }
-        
+
         if jFound && iFound {
             counter++
         }
 
-        hashMap[potentialK]++
+        theMap[potentialK]++
     }
 
     return counter
