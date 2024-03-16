@@ -1,19 +1,25 @@
 func differenceOfSum(nums []int) int {
-    elSum := 0
-    digitSum := 0
+    var elementSum int
+    var digitSum int
     for _, v := range nums {
-        elSum += v
-        curr := v
-        for curr > 0 {
-            digitSum += curr % 10
-            curr = curr / 10
-        }
+        digitSum += sumDigit(v)
+        elementSum += v
     }
 
-    res := elSum - digitSum
-    if res < 0 {
-        return -res
+    diff := elementSum - digitSum
+    if diff < 0 {
+        return -diff
     }
 
-    return res
+    return diff
+}
+
+func sumDigit(n int) int {
+    result := 0
+    for n > 0 {
+        result += n % 10
+        n /= 10
+    }
+
+    return result
 }
