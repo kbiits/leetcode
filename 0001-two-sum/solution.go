@@ -1,13 +1,15 @@
 func twoSum(nums []int, target int) []int {
-    var mapSum = map[int]int{}
-    for i, num := range nums {
-        complement := target - num
-        if v, ex := mapSum[complement]; ex {
-            return []int{i, v}
-        } else {
-            mapSum[num] = i
+    
+    theMap := map[int]int{}
+    for i, v := range nums {
+        complement := target - v
+        complementIdx, ok := theMap[complement]
+        if ok {
+            return []int{complementIdx, i}
         }
+
+        theMap[v] = i
     }
 
-    return []int{-1, -1}
+    return []int{}
 }
