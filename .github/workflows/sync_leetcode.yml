@@ -3,7 +3,7 @@ name: Sync Leetcode
 on:
   workflow_dispatch:
   schedule:
-    - cron: "0 */12 * * *"
+    - cron: "0 0 */2 * *"
 
 jobs:
   build:
@@ -11,7 +11,7 @@ jobs:
 
     steps:
       - name: Sync
-        uses: joshcai/leetcode-sync@c1873656f848633b304ee4359d77e6e467961d6e
+        uses: kbiits/leetcode-sync@3c4e77647ee29faacbf59c185ed4dc140855491b
         with:
           github-token: ${{ github.token }}
           leetcode-csrf-token: ${{ secrets.LEETCODE_CSRF_TOKEN }}
