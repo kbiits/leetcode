@@ -1,48 +1,39 @@
 import "slices"
 
-type pair struct {
-    a int
-    b int
-    c int
-}
-
 func threeSum(nums []int) [][]int {
-    slices.Sort(nums)
-
     res := [][]int{}
-    resSet := map[pair]int{}
+    if len(nums) < 3 {
+        return res
+    }
 
+    slices.Sort(nums)
     targetSum := 0
 
-    for i := 0; i < len(nums); i++ {
-
-        ith := nums[i]
+    for i := 0; i < len(nums) - 2; i++ {
+        if i > 0 && nums[i] == nums[i-1] {
+			continue
+		}
 
         // 2 sum solve
-        left := i + 1
-        right := len(nums) - 1
+        left, right := i + 1, len(nums) - 1
         for left < right {
-            sum := nums[left] + nums[right] + ith
+            sum := nums[left] + nums[right] + nums[i]
+
             if sum == targetSum {
-                potentialRes := []int{nums[left], nums[right], ith}
-                slices.Sort(potentialRes)
+                res = append(res, []int{nums[left], nums[right], nums[i]})
+                left, right = left + 1, right - 1
 
-                // check the set
-                pair := pair{potentialRes[0], potentialRes[1], potentialRes[2]}
-                if _, ok := resSet[pair]; !ok {
-                    resSet[pair]++
-                    res = append(res, potentialRes)
-                }
-                
-                left++
-                right--
-
+                for left < right && nums[left] == nums[left-1] {
+					left++
+				}
+                for left < right && nums[right] == nums[right+1] {
+					right--
+				}
             } else if sum > targetSum {
                 right--
             } else {
                 left++
             }
-
         }
 
     }
