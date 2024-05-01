@@ -1,20 +1,15 @@
-func isPalindrome(x int) (out bool) {
-	if x == 0 {
-		return true
-	}
-	if x < 0 || x%10 == 0 {
-		return false
-	}
+func isPalindrome(x int) bool {
+    if x < 0 {
+        return false
+    }
 
-	sumHalfFromRight := 0
-	for x > sumHalfFromRight {
-		lastDigit := x % 10
-		sumHalfFromRight = sumHalfFromRight*10 + lastDigit
+    reversed := 0
+    xCopy := x
+    for xCopy != 0 {
+        reversed *= 10
+        reversed += xCopy % 10
+        xCopy /= 10
+    }
 
-		// reduce x
-		x = x / 10
-	}
-
-	return x == sumHalfFromRight || x == (sumHalfFromRight / 10)
+    return reversed == x
 }
-
