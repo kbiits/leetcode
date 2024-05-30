@@ -1,16 +1,19 @@
 func containsNearbyDuplicate(nums []int, k int) bool {
-    slidingWindow := map[int]bool{}
+    set := map[int]bool{}
     left := 0
     for _, v := range nums {
-        if _, ok := slidingWindow[v]; ok {
+        // check if v in our set
+        if set[v] {
             return true
         }
 
-        slidingWindow[v] = true
+        // add v to our set
+        set[v] = true
 
-        // sliding window
-        if len(slidingWindow) > k {
-            delete(slidingWindow, nums[left])
+        // sliding window, check if our window length > k
+        // abs(i - j) always <= k if our window length is <= k
+        if len(set) > k {
+            delete(set, nums[left])
             left++
         }
     }
@@ -18,3 +21,10 @@ func containsNearbyDuplicate(nums []int, k int) bool {
     return false
 }
 
+func absDiff(i, j int) int {
+    if i > j {
+        return i - j
+    }
+
+    return j - i
+}
